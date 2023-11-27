@@ -1,8 +1,8 @@
 package com.example.userservicespring.controllers;
 
-import com.example.userservicespring.dtos.AuthenticationRequest;
-import com.example.userservicespring.dtos.AuthenticationResponse;
-import com.example.userservicespring.dtos.RegisterRequest;
+import com.example.userservicespring.dtos.SigninRequestDto;
+import com.example.userservicespring.dtos.TokenSinginResponseDTO;
+import com.example.userservicespring.dtos.RegisterRequestDto;
 import com.example.userservicespring.services.AuthenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,19 +14,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-public class AuthenticationController {
+public class AuthController {
 
     private final AuthenService authenService;
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody RegisterRequest registerRequest
+    public void register(@RequestBody RegisterRequestDto registerRequestDto
     ){
-        return ResponseEntity.ok(authenService.register(registerRequest));
+        authenService.register(registerRequestDto);
     }
     @PostMapping("/signin")
-    public ResponseEntity<AuthenticationResponse> authenticate(
-            @RequestBody AuthenticationRequest authenticationRequest
+    public ResponseEntity<TokenSinginResponseDTO> authenticate(
+            @RequestBody SigninRequestDto signinRequestDto
     ){
-        return ResponseEntity.ok(authenService.authenticate(authenticationRequest));
+        return ResponseEntity.ok(authenService.signin(signinRequestDto));
     }
 }
