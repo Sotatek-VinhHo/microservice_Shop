@@ -1,15 +1,21 @@
 package com.example.userservicespring.services;
 
 import com.example.userservicespring.dtos.SigninRequestDto;
-import com.example.userservicespring.dtos.TokenSinginResponseDTO;
+import com.example.userservicespring.dtos.TokenSigninResponseDTO;
 import com.example.userservicespring.dtos.RegisterRequestDto;
 import com.example.userservicespring.entities.UserEntity;
 import com.example.userservicespring.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Collection;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +40,7 @@ public class AuthenService {
 //                .token(jwtToken)
 //                .build();
     }
-    public TokenSinginResponseDTO signin(SigninRequestDto signinRequestDto) {
+    public TokenSigninResponseDTO signin(SigninRequestDto signinRequestDto) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         signinRequestDto.getEmail(),
@@ -45,8 +51,22 @@ public class AuthenService {
         var user = userRepository.findByEmail(signinRequestDto.getEmail())
                 .orElseThrow();
         var jwtToken = jwtService.generateToken(user);
-        return TokenSinginResponseDTO.builder()
+        return TokenSigninResponseDTO.builder()
                 .token(jwtToken)
                 .build();
+    }
+    public void printUserRoles() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+            // Lấy danh sách các vai trò của người dùng
+            Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
+
+            // In ra các vai trò
+            for (GrantedAuthority authority : authorities) {
+                System.out.println("Role: " + authority.getAuthority());
+            }
+        }
     }
 }

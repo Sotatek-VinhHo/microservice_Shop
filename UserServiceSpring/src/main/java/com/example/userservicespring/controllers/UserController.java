@@ -1,15 +1,15 @@
 package com.example.userservicespring.controllers;
 
 
+import com.example.userservicespring.dtos.UdpateUserProfileRequestDTO;
+import com.example.userservicespring.dtos.UpdateUserBalanceRequestDTO;
 import com.example.userservicespring.dtos.UserConverter;
 import com.example.userservicespring.dtos.UserDTO;
 import com.example.userservicespring.entities.UserEntity;
 import com.example.userservicespring.services.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,7 +19,6 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-
     private final UserConverter userConverter;
 
     public UserController(UserService userService, UserConverter userConverter) {
@@ -38,10 +37,23 @@ public class UserController {
         return ResponseEntity.ok().body(userDTOList);
     }
 
+    @PatchMapping("/{id}/profile")
+    public void updateUserProfile(@PathVariable("id") Long id, @RequestBody UdpateUserProfileRequestDTO userDTO) {
+        userService.updateUserProfile(id, userDTO.address(), userDTO.phone());
+    }
+    @PatchMapping("/{id}/balance")
+    public void updateUserBalance(@PathVariable("id") Long id, @RequestBody UpdateUserBalanceRequestDTO balanceDTO) {
+        userService.updateUserBalance(id, balanceDTO.balance());
+    }
 
-    @GetMapping("/hello")
-    public String sayHelllo(){
-        return "hello from secured endpoint";
+
+    @GetMapping("/helloMember")
+    public String helloMember(){
+        return "hello MEMBER";
+    }
+    @GetMapping("/helloAdmin")
+    public String helloAdmin(){
+        return "hello ADMIN";
     }
 }
 

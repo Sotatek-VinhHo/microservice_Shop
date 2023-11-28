@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TokenSinginResponseDTO {
+public class TokenSigninResponseDTO {
     private String token;
 }

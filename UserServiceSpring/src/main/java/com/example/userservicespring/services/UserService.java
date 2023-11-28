@@ -17,7 +17,24 @@ public class UserService {
     }
 
     public List<UserEntity> findAllUsers() {
-
         return userRepository.findAll();
     }
+
+    public void updateUserProfile(Long id, String address, String phone) {
+            UserEntity foundUserEntity = findUserById(id);
+            if (phone != null) {
+                foundUserEntity.setPhone(phone);
+            }
+            if (address != null) {
+                foundUserEntity.setAddress(address);
+            }
+            userRepository.save(foundUserEntity);
+        }
+
+    public void updateUserBalance(Long id, Double balance) {
+        UserEntity foundUserEntity = findUserById(id);
+        foundUserEntity.setBalance(balance);
+        userRepository.save(foundUserEntity);
+    }
 }
+
