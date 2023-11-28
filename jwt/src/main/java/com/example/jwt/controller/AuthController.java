@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 //@SecurityRequirement(name = "Bearer Authentication")
-@RequestMapping("/api")
+@RequestMapping("")
 public class AuthController {
 
     private final TokenProvider tokenProvider;
@@ -22,12 +22,12 @@ public class AuthController {
         this.tokenProvider = tokenProvider;
     }
 
-    @PostMapping("/auth/generate")
+    @PostMapping("generate")
     public TokenResponse authorize (@RequestBody User user) {
         String token = tokenProvider.createToken(user.getUsername());
         return new TokenResponse(token);
     }
-    @PostMapping("/auth/verify")
+    @PostMapping("verify")
     public ResponseEntity<JwtVerifyResponseDTO> validateToken(@RequestHeader("Authorization") String token) {
         System.out.println(token);
         String username = tokenProvider.validateToken(token);
@@ -37,7 +37,7 @@ public class AuthController {
         );
     }
 
-    @GetMapping("/data")
+    @GetMapping("data")
     public List<String> data(){
             List<String> lists = new ArrayList<>();
             lists.add("abc");
