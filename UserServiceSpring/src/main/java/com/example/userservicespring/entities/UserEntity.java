@@ -21,7 +21,7 @@ import java.util.List;
 public class UserEntity implements UserDetails {
     @Getter
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @NonNull

@@ -7,6 +7,7 @@ import com.example.userservicespring.dtos.UserConverter;
 import com.example.userservicespring.dtos.UserDTO;
 import com.example.userservicespring.entities.UserEntity;
 import com.example.userservicespring.services.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,44 +15,41 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("")
 
 public class UserController {
 
     private final UserService userService;
-    private final UserConverter userConverter;
 
-    public UserController(UserService userService, UserConverter userConverter) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.userConverter = userConverter;
     }
 
-    @GetMapping("/{id}/profile")
-    public ResponseEntity<UserDTO> getUserProfile(@PathVariable("id") Long id) {
-        return ResponseEntity.ok().body(userConverter.convertToDto(userService.findUserById(id)));
+    @GetMapping("/profile")
+    public ResponseEntity<UserDTO> getUserProfile() {
+        return ResponseEntity.ok().body(userService.getUserProfile());
+    }
+    @PatchMapping("/profile")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateUserProfile(@RequestBody UdpateUserProfileRequestDTO userDTO) {
+        userService.updateUserProfile(userDTO);
+    }
+    @PatchMapping("/user/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateUserBalance(@PathVariable("id") Long id, @RequestBody UpdateUserBalanceRequestDTO balanceDTO) {
+        userService.updateUserBalance(id, balanceDTO);
     }
     @GetMapping("/allprofile")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<UserDTO>> getAllUsers() {
-        List<UserEntity> userList = userService.findAllUsers();
-        List<UserDTO> userDTOList = userConverter.convertToDtoList(userList);
-        return ResponseEntity.ok().body(userDTOList);
+        return ResponseEntity.ok().body(userService.getAllProfile());
     }
-
-    @PatchMapping("/{id}/profile")
-    public void updateUserProfile(@PathVariable("id") Long id, @RequestBody UdpateUserProfileRequestDTO userDTO) {
-        userService.updateUserProfile(id, userDTO.address(), userDTO.phone());
-    }
-    @PatchMapping("/{id}/balance")
-    public void updateUserBalance(@PathVariable("id") Long id, @RequestBody UpdateUserBalanceRequestDTO balanceDTO) {
-        userService.updateUserBalance(id, balanceDTO.balance());
-    }
-
-
     @GetMapping("/helloMember")
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public String helloMember(){
         return "hello MEMBER";
     }
     @GetMapping("/helloAdmin")
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public String helloAdmin(){
         return "hello ADMIN";
     }

@@ -1,8 +1,14 @@
 package com.example.userservicespring.services;
 
+import com.example.userservicespring.dtos.UpdateUserBalanceRequestDTO;
+import com.example.userservicespring.dtos.UserConverter;
+import com.example.userservicespring.dtos.UserDTO;
 import com.example.userservicespring.entities.UserEntity;
+import com.example.userservicespring.exceptions.UserNotFoundException;
 import com.example.userservicespring.repositories.UserRepository;
+import com.example.userservicespring.dtos.UdpateUserProfileRequestDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,30 +17,47 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final UserConverter userConverter;
 
     public UserEntity findUserById(Long id) {
-        return userRepository.findById(id).orElseThrow();
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
-
+    private UserEntity findUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow();
+    }
     public List<UserEntity> findAllUsers() {
         return userRepository.findAll();
     }
 
-    public void updateUserProfile(Long id, String address, String phone) {
-            UserEntity foundUserEntity = findUserById(id);
-            if (phone != null) {
-                foundUserEntity.setPhone(phone);
+    public void updateUserProfile(UdpateUserProfileRequestDTO userDTO) {
+            UserEntity foundUserEntity = getUserProfileNow();
+            if (userDTO.phone() != null) {
+                foundUserEntity.setPhone(userDTO.phone());
             }
-            if (address != null) {
-                foundUserEntity.setAddress(address);
+            if (userDTO.address() != null) {
+                foundUserEntity.setAddress(userDTO.address());
             }
             userRepository.save(foundUserEntity);
         }
 
-    public void updateUserBalance(Long id, Double balance) {
+    public void updateUserBalance(Long id, UpdateUserBalanceRequestDTO balanceRequestDTO) {
         UserEntity foundUserEntity = findUserById(id);
-        foundUserEntity.setBalance(balance);
-        userRepository.save(foundUserEntity);
+        userRepository.updateBalance(foundUserEntity.getId(), balanceRequestDTO.balance());
     }
+
+    public UserDTO getUserProfile() {
+        return userConverter.convertToDto(getUserProfileNow());
+    }
+    private UserEntity getUserProfileNow() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return findUserByEmail(email);
+    }
+    public List<UserDTO> getAllProfile() {
+        List<UserEntity> userList = findAllUsers();
+        List<UserDTO> userDTOList = userConverter.convertToDtoList(userList);
+        return userDTOList;
+    }
+
+
 }
 

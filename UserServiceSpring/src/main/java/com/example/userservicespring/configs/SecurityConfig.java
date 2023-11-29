@@ -27,7 +27,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests(
-                        req -> req.antMatchers("/auth/**", "/allprofile","/swagger-ui/**", "/docs/**").permitAll()
+                        req -> req.antMatchers("/signin","/signup","/allprofile","/swagger-ui/**", "/docs/**").permitAll()
                                 .regexMatchers(HttpMethod.GET, "/\\d+/profile").hasAnyAuthority(String.valueOf(Role.MEMBER),String.valueOf(Role.ADMIN))
                                 .regexMatchers(HttpMethod.PATCH, "/\\d+/profile").hasAnyAuthority(String.valueOf(Role.MEMBER),String.valueOf(Role.ADMIN))
                                 .regexMatchers(HttpMethod.GET, "/helloMember").hasAuthority(String.valueOf(Role.MEMBER))
