@@ -39,16 +39,15 @@ public class UserService {
             }
             userRepository.save(foundUserEntity);
         }
-
-//    public void updateUserBalance(Long id, UpdateUserBalanceRequestDTO balanceRequestDTO) {
-//        UserEntity foundUserEntity = findUserById(id);
-//        userRepository.updateBalance(foundUserEntity.getId(), balanceRequestDTO.balance());
-//    }
-public void updateUserBalance(Long id, UpdateUserBalanceRequestDTO balanceRequestDTO) {
-    UserEntity foundUserEntity = findUserById(id);
-    foundUserEntity.setBalance(balanceRequestDTO.balance());
-    userRepository.save(foundUserEntity);
-}
+    public void updateUserBalance(Long id, UpdateUserBalanceRequestDTO balanceRequestDTO) {
+        UserEntity foundUserEntity = findUserById(id);
+        userRepository.updateBalance(foundUserEntity.getId(), balanceRequestDTO.balance());
+    }
+//public void updateUserBalance(Long id, UpdateUserBalanceRequestDTO balanceRequestDTO) {
+//    UserEntity foundUserEntity = findUserById(id);
+//    foundUserEntity.setBalance(balanceRequestDTO.balance());
+//    userRepository.save(foundUserEntity);
+//}
 
     public UserDTO getUserProfile() {
         return userConverter.convertToDto(getUserProfileNow());

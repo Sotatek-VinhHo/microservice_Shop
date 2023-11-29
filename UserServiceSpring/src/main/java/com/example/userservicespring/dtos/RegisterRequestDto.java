@@ -13,6 +13,11 @@ public class RegisterRequestDto {
     private String address;
     private String phone;
     private String password;
+    private Double balance;
     private Role role;
+
+    public Double setBalance() {
+        return 0.0;
+    }
 }
 

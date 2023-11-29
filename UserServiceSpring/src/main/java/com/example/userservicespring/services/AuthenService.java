@@ -33,6 +33,7 @@ public class AuthenService {
                 .phone(registerRequestDto.getPhone())
                 .password(passwordEncoder.encode(registerRequestDto.getPassword()))
                 .role(registerRequestDto.getRole())
+                .balance(registerRequestDto.setBalance())
                 .build();
         userRepository.save(user);
 //        var jwtToken = jwtService.generateToken(user);

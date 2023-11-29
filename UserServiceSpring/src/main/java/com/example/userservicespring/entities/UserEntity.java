@@ -36,7 +36,8 @@ public class UserEntity implements UserDetails {
     @Getter
     @Enumerated(EnumType.STRING)
     private Role role;
-    private Double balance;
+//    @Column(columnDefinition = "float8 default 0")
+    private Double balance ;
 
 
     public UserEntity(String email, String address, String phone, String password, Role role, Double balance) {
