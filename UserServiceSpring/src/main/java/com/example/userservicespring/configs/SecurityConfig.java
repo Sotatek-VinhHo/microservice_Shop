@@ -23,17 +23,16 @@ public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests(
-                        req -> req.antMatchers("/api/auth/**", "/api/users/allprofile").permitAll()
-                                .regexMatchers(HttpMethod.GET, "/api/users/\\d+/profile").hasAnyAuthority(String.valueOf(Role.MEMBER),String.valueOf(Role.ADMIN))
-                                .regexMatchers(HttpMethod.PATCH, "/api/users/\\d+/profile").hasAnyAuthority(String.valueOf(Role.MEMBER),String.valueOf(Role.ADMIN))
-                                .regexMatchers(HttpMethod.GET, "/api/users/helloMember").hasAuthority(String.valueOf(Role.MEMBER))
-                                .regexMatchers(HttpMethod.GET, "/api/users/helloAdmin").hasAuthority(String.valueOf(Role.ADMIN))
-                                .regexMatchers(HttpMethod.PATCH, "/api/users/\\d+/balance").hasAuthority(String.valueOf(Role.ADMIN))
+                        req -> req.antMatchers("/auth/**", "/allprofile","/swagger-ui/**", "/docs/**").permitAll()
+                                .regexMatchers(HttpMethod.GET, "/\\d+/profile").hasAnyAuthority(String.valueOf(Role.MEMBER),String.valueOf(Role.ADMIN))
+                                .regexMatchers(HttpMethod.PATCH, "/\\d+/profile").hasAnyAuthority(String.valueOf(Role.MEMBER),String.valueOf(Role.ADMIN))
+                                .regexMatchers(HttpMethod.GET, "/helloMember").hasAuthority(String.valueOf(Role.MEMBER))
+                                .regexMatchers(HttpMethod.GET, "/helloAdmin").hasAuthority(String.valueOf(Role.ADMIN))
+                                .regexMatchers(HttpMethod.PATCH, "/\\d+/balance").hasAuthority(String.valueOf(Role.ADMIN))
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
@@ -42,3 +41,4 @@ public class SecurityConfig {
         return http.build();
     }
 }
+

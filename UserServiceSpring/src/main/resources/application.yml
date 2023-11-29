@@ -13,3 +13,22 @@ spring:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+#server.servlet.contextPath=/api/auth
+#server.port=9000
+#
+#springdoc.api-docs.path=/docs
+#springdoc.swagger-ui.path=/swagger-ui.html
+#springdoc.server=http://localhost:9000/api/auth
+
+server:
+  servlet:
+    contextPath: /api/user
+  port: 9001
+
+springdoc:
+  api-docs:
+    path: /docs
+  swagger-ui:
+    path: /swagger-ui.html
+  server: http://localhost:9001/api/user
