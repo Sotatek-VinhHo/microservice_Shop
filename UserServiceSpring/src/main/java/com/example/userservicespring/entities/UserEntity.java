@@ -36,9 +36,7 @@ public class UserEntity implements UserDetails {
     @Getter
     @Enumerated(EnumType.STRING)
     private Role role;
-
     private Double balance;
-
 
 
     public UserEntity(String email, String address, String phone, String password, Role role, Double balance) {
