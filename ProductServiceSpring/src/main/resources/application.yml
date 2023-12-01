@@ -1,0 +1,28 @@
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ProductService
+    username: postgres
+    password: "061102"
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  servlet:
+    contextPath: /api/product
+  port: 9002
+
+springdoc:
+  api-docs:
+    path: /docs
+  swagger-ui:
+    path: /swagger-ui.html
+  server: http://localhost:9002/api/product
