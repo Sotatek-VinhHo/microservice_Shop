@@ -22,7 +22,6 @@ import java.util.Map;
 public class TokenProvider {
     @Value("Bearer ")
     private String prefix;
-
     private static final Logger log = LoggerFactory.getLogger(TokenProvider.class);
 
     private Key key;

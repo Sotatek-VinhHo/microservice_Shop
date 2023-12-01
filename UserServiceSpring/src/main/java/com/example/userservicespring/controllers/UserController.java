@@ -40,7 +40,8 @@ public class UserController {
     }
     @GetMapping("/allprofile")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<UserDTO>> getAllUsers() {
+    public ResponseEntity<List<UserDTO>> getAllUsers()
+    {
         return ResponseEntity.ok().body(userService.getAllProfile());
     }
     @GetMapping("/helloMember")

@@ -27,7 +27,6 @@ public class UserConverter {
             UserDTO userDTO = convertToDto(userEntity); // Gọi phương thức chuyển đổi cho từng đối tượng UserEntity
             userDTOList.add(userDTO); // Thêm đối tượng UserDTO vào danh sách kết quả
         }
-
         return userDTOList;
     }
 }
