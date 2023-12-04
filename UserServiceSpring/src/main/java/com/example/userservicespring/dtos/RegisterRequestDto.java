@@ -15,9 +15,5 @@ public class RegisterRequestDto {
     private String password;
     private Double balance;
     private Role role;
-
-    public Double setBalance() {
-        return 0.0;
-    }
 }
 

@@ -23,7 +23,6 @@ public class TokenProvider {
     @Value("Bearer ")
     private String prefix;
     private static final Logger log = LoggerFactory.getLogger(TokenProvider.class);
-
     private Key key;
 
     public String validateToken(String authToken) {
@@ -31,9 +30,7 @@ public class TokenProvider {
         if(authToken == null || !authToken.startsWith(prefix)) {
             throw new UnauthorizedException("JWT token is missing or invalid");
         }
-
         String token = authToken.split(" ")[1].trim();
-
         try {
             System.out.println(Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody());
             return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody().getSubject();
